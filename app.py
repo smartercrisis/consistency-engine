@@ -66,12 +66,14 @@ if st.button("Realign & Generate Anchored Prompt"):
             
             similarity_score = util.cos_sim(prompt_embedding, anchor_embedding).item()
             
-            # DETERMINISTIC STRUCTURAL INJECTION (Fixing the string-glitch)
+            # CLEAN SEMANTIC INTEGRATION (Eliminating trailing spec dumps)
+            core_subject = raw_prompt.strip()
+            aesthetic = anchor_data["core_aesthetic"]
+            palette = anchor_data["color_palette"]
+            
             realigned_prompt = (
-                f"{raw_prompt}. "
-                f"[Aesthetic Directive: {anchor_data['core_aesthetic']}]. "
-                f"[Color Schema: {anchor_data['color_palette']}]. "
-                f"High-end production render, 8k resolution, crisp structural focus."
+                f"{core_subject}, rendered in {aesthetic}, featuring a primary color palette of {palette}, "
+                f"professional digital art, high-end production render, 8k resolution, immaculate surface details."
             )
             
             negative_prompt_output = anchor_data['negative_constraints']
@@ -81,7 +83,7 @@ if st.button("Realign & Generate Anchored Prompt"):
             with col1:
                 st.metric(label="Semantic Similarity Score", value=f"{similarity_score:.2f}")
             with col2:
-                st.markdown("🟢 **Structured Schema Enforced**")
+                st.markdown("🟢 **Semantic Integration Enforced**")
             
             st.markdown("---")
             st.subheader("📋 Positive Anchored Prompt (Copy to Image Generator)")
