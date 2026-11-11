@@ -30,8 +30,8 @@ model = load_model()
 
 st.set_page_config(page_title="CIAT25 Visual Consistency Engine (LITE)", layout="wide")
 
-st.title("⚡ CIAT25.1: Visual Consistency Engine (LITE - Refactored)")
-st.markdown("*Gate 0 Modular Ingress & Structured Schema Synthesis*")
+st.title("⚡ CIAT25.1: Visual Consistency Engine (LITE - Prose Weaving)")
+st.markdown("*Gate 0 Dynamic Perimeter Ingress & Natural Prose Synthesis*")
 
 # Sidebar: Manage Style Anchor & Dynamic Thresholds
 with st.sidebar:
@@ -54,27 +54,26 @@ with st.sidebar:
         st.success("Style Anchor updated successfully!")
         anchor_data = updated_anchor
 
-# Main Panel: Prompt Ingress & Modular Synthesis
+# Main Panel: Prompt Ingress & Prose Weaving Synthesis
 st.header("3. Structural Prompt Realignment Gate")
-raw_prompt = st.text_input("Enter your messy or casual prompt:", placeholder="e.g., make a server rack with red lights")
+raw_prompt = st.text_input("Enter your prompt or descriptive scene:", placeholder="e.g., an entire landscape of folded blue-white ice...")
 
 if st.button("Realign & Synthesize Anchored Output"):
     if not raw_prompt.strip():
         st.warning("Please enter a prompt first.")
     else:
-        with st.spinner("Evaluating semantic drift and constructing modular payload..."):
+        with st.spinner("Evaluating semantic drift and weaving prose payload..."):
             anchor_embedding = model.encode(anchor_data["core_aesthetic"], convert_to_tensor=True)
             prompt_embedding = model.encode(raw_prompt, convert_to_tensor=True)
             
             similarity_score = util.cos_sim(prompt_embedding, anchor_embedding).item()
             
-            # REFINED MODULAR SYNTHESIS: Using Scene block tagging to prevent heavy paragraph token bleed
+            # PROSE WEAVING SYNTHESIS: Replaces clunky bracket tags with natural language modifier clauses
             clean_subject = raw_prompt.strip().rstrip('.')
             fused_prompt_string = (
-                f"Scene: [{clean_subject}], "
-                f"Core Aesthetic: [{anchor_data['core_aesthetic']}], "
-                f"Palette: [{anchor_data['color_palette']}], "
-                f"Render Spec: High-end production render, 8k resolution, volumetric lighting."
+                f"{clean_subject}, rendered with {anchor_data['core_aesthetic']}, "
+                f"incorporating a strict color grading of {anchor_data['color_palette']}, "
+                f"high-end production render, 8k resolution, volumetric lighting."
             )
             
             # JSON Payload for machine governance & audit
@@ -98,7 +97,7 @@ if st.button("Realign & Synthesize Anchored Output"):
                 st.markdown(f"{status_color} **Status: {structured_payload['ingress_metadata']['status']}**")
             
             st.markdown("---")
-            st.subheader("📋 Modular Fused Prompt (Ready for Pipeline)")
+            st.subheader("📋 Woven Fused Prompt (Ready for Pipeline)")
             st.code(fused_prompt_string, language="text")
             
             st.subheader("📋 Machine Audit JSON Payload")
