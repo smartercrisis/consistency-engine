@@ -66,16 +66,16 @@ if st.button("Realign & Generate Anchored Prompt"):
             
             similarity_score = util.cos_sim(prompt_embedding, anchor_embedding).item()
             
-            # CLEAN SEMANTIC INTEGRATION (Eliminating trailing spec dumps)
+            # Clean Native Semantic Blend
             core_subject = raw_prompt.strip()
             aesthetic = anchor_data["core_aesthetic"]
             palette = anchor_data["color_palette"]
-            
+
             realigned_prompt = (
-                f"{core_subject}, rendered in {aesthetic}, featuring a primary color palette of {palette}, "
-                f"professional digital art, high-end production render, 8k resolution, immaculate surface details."
+            f"{core_subject} designed with {aesthetic}, utilizing a strict color scheme of {palette}. "
+          f"High-end production render, 8k resolution, immaculate surface details."
             )
-            
+
             negative_prompt_output = anchor_data['negative_constraints']
             
             # Display Metrics & Clean Separation
