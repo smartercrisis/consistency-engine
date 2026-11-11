@@ -33,7 +33,7 @@ st.set_page_config(page_title="CIAT25 Visual Consistency Engine (LITE)", layout=
 st.title("⚡ CIAT25.1: Visual Consistency Engine (LITE - Refactored)")
 st.markdown("*Gate 0 Modular Ingress & Structured Schema Synthesis*")
 
-# Sidebar: Manage Style Anchor & Thresholds
+# Sidebar: Manage Style Anchor & Dynamic Thresholds
 with st.sidebar:
     st.header("1. Style Anchor Vault")
     new_aesthetic = st.text_area("Core Aesthetic", value=anchor_data["core_aesthetic"], height=100)
@@ -68,13 +68,13 @@ if st.button("Realign & Synthesize Anchored Output"):
             
             similarity_score = util.cos_sim(prompt_embedding, anchor_embedding).item()
             
-            # MODULAR SYNTHESIS: Segmenting tokens to eliminate cross-attention bleed
+            # REFINED MODULAR SYNTHESIS: Using Scene block tagging to prevent heavy paragraph token bleed
             clean_subject = raw_prompt.strip().rstrip('.')
             fused_prompt_string = (
-                f"Subject: [{clean_subject}] | "
-                f"Aesthetic Style: [{anchor_data['core_aesthetic']}] | "
-                f"Color Grading: [{anchor_data['color_palette']}] | "
-                f"Production Spec: High-end production render, 8k resolution, volumetric lighting."
+                f"Scene: [{clean_subject}], "
+                f"Core Aesthetic: [{anchor_data['core_aesthetic']}], "
+                f"Palette: [{anchor_data['color_palette']}], "
+                f"Render Spec: High-end production render, 8k resolution, volumetric lighting."
             )
             
             # JSON Payload for machine governance & audit
