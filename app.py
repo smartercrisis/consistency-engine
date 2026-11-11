@@ -30,15 +30,18 @@ model = load_model()
 
 st.set_page_config(page_title="CIAT25 Visual Consistency Engine (LITE)", layout="wide")
 
-st.title("⚡ CIAT25.1: Visual Consistency Engine (LITE)")
-st.markdown("*Gate 0 Perimeter Ingress & Fused Schema Synthesis*")
+st.title("⚡ CIAT25.1: Visual Consistency Engine (LITE - Refactored)")
+st.markdown("*Gate 0 Modular Ingress & Structured Schema Synthesis*")
 
-# Sidebar: Manage Style Anchor
+# Sidebar: Manage Style Anchor & Thresholds
 with st.sidebar:
     st.header("1. Style Anchor Vault")
     new_aesthetic = st.text_area("Core Aesthetic", value=anchor_data["core_aesthetic"], height=100)
     new_palette = st.text_input("Color Palette", value=anchor_data["color_palette"])
     new_negative = st.text_area("Negative Constraints", value=anchor_data["negative_constraints"], height=80)
+    
+    st.header("2. Gate Calibration")
+    similarity_threshold = st.slider("Drift Tolerance Threshold", min_value=0.1, max_value=0.9, value=0.4, step=0.05)
     
     if st.button("Save Style Anchor"):
         updated_anchor = {
@@ -51,26 +54,27 @@ with st.sidebar:
         st.success("Style Anchor updated successfully!")
         anchor_data = updated_anchor
 
-# Main Panel: Prompt Ingress & Realignment
-st.header("2. Structural Prompt Realignment Gate")
+# Main Panel: Prompt Ingress & Modular Synthesis
+st.header("3. Structural Prompt Realignment Gate")
 raw_prompt = st.text_input("Enter your messy or casual prompt:", placeholder="e.g., make a server rack with red lights")
 
 if st.button("Realign & Synthesize Anchored Output"):
     if not raw_prompt.strip():
         st.warning("Please enter a prompt first.")
     else:
-        with st.spinner("Evaluating semantic drift and synthesizing payload..."):
+        with st.spinner("Evaluating semantic drift and constructing modular payload..."):
             anchor_embedding = model.encode(anchor_data["core_aesthetic"], convert_to_tensor=True)
             prompt_embedding = model.encode(raw_prompt, convert_to_tensor=True)
             
             similarity_score = util.cos_sim(prompt_embedding, anchor_embedding).item()
             
-            # TRUE SYNTHESIS: Cleanly weaving subject and aesthetic into a unified string
+            # MODULAR SYNTHESIS: Segmenting tokens to eliminate cross-attention bleed
             clean_subject = raw_prompt.strip().rstrip('.')
             fused_prompt_string = (
-                f"{clean_subject}, rendered with {anchor_data['core_aesthetic']} "
-                f"incorporating a primary color palette of {anchor_data['color_palette']}, "
-                f"high-end production render, 8k resolution, volumetric lighting."
+                f"Subject: [{clean_subject}] | "
+                f"Aesthetic Style: [{anchor_data['core_aesthetic']}] | "
+                f"Color Grading: [{anchor_data['color_palette']}] | "
+                f"Production Spec: High-end production render, 8k resolution, volumetric lighting."
             )
             
             # JSON Payload for machine governance & audit
@@ -78,7 +82,8 @@ if st.button("Realign & Synthesize Anchored Output"):
                 "ingress_metadata": {
                     "gate": "Gate-0-Perimeter",
                     "similarity_score": round(similarity_score, 4),
-                    "status": "APPROVED" if similarity_score >= 0.4 else "RE-ANCHORED"
+                    "threshold_applied": similarity_threshold,
+                    "status": "APPROVED" if similarity_score >= similarity_threshold else "RE-ANCHORED"
                 },
                 "fused_prompt": fused_prompt_string,
                 "negative_constraints": anchor_data['negative_constraints']
@@ -89,10 +94,11 @@ if st.button("Realign & Synthesize Anchored Output"):
             with col1:
                 st.metric(label="Semantic Similarity Score", value=f"{similarity_score:.2f}")
             with col2:
-                st.markdown("🟢 **Synthesis Complete**")
+                status_color = "🟢" if similarity_score >= similarity_threshold else "🟠"
+                st.markdown(f"{status_color} **Status: {structured_payload['ingress_metadata']['status']}**")
             
             st.markdown("---")
-            st.subheader("📋 Fused Prompt (Ready for Image Generator)")
+            st.subheader("📋 Modular Fused Prompt (Ready for Pipeline)")
             st.code(fused_prompt_string, language="text")
             
             st.subheader("📋 Machine Audit JSON Payload")
