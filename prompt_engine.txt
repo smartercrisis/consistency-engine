@@ -1,5 +1,5 @@
 [CIAT25.1 LITE PROMPT REALIGNMENT GATE]
-- Master Aesthetic Anchor: Cinematic Radeon-tech, razor-sharp edge details, multi-layer microchip geometry, matte black and brushed titanium substrates.
+- Master Aesthetic Anchor: Cinematic AMD Radeon tech style, razor-sharp edge details, multi-layer microchip geometry, futurestic processors and circuit boards, sine waves, matte black and brushed titanium substrates, UHD, volumetric lighting
 - Color Palette: Crimson Red (#C50000), Royal Gold (#D4AF37), Deep Carbon (#111111).
 - Negative Constraints: No cartoonish illustration, no flat lighting, no pastel colors.
 
