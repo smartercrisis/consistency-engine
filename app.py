@@ -32,7 +32,7 @@ model = load_model()
 st.set_page_config(page_title="CIAT25 Visual Consistency Engine (LITE)", layout="wide")
 
 st.title("⚡ CIAT25.1: Visual Consistency Engine (LITE)")
-st.markdown("*Gate 0 Perimeter Ingress & Structured Prompt Realignment*")
+st.markdown("*Gate 0 Perimeter Ingress & Structured Schema Enforcement*")
 
 # Sidebar: Manage Style Anchor
 with st.sidebar:
@@ -56,38 +56,39 @@ with st.sidebar:
 st.header("2. Structural Prompt Realignment Gate")
 raw_prompt = st.text_input("Enter your messy or casual prompt:", placeholder="e.g., make a server rack with red lights")
 
-if st.button("Realign & Generate Anchored Prompt"):
+if st.button("Realign & Generate Anchored Payload"):
     if not raw_prompt.strip():
         st.warning("Please enter a prompt first.")
     else:
-        with st.spinner("Evaluating semantic drift and structuring schema..."):
+        with st.spinner("Evaluating semantic drift and building JSON schema payload..."):
             anchor_embedding = model.encode(anchor_data["core_aesthetic"], convert_to_tensor=True)
             prompt_embedding = model.encode(raw_prompt, convert_to_tensor=True)
             
             similarity_score = util.cos_sim(prompt_embedding, anchor_embedding).item()
             
-            # Clean Native Semantic Blend
-            core_subject = raw_prompt.strip()
-            aesthetic = anchor_data["core_aesthetic"]
-            palette = anchor_data["color_palette"]
-
-            realigned_prompt = (
-            f"{core_subject} designed with {aesthetic}, utilizing a strict color scheme of {palette}. "
-          f"High-end production render, 8k resolution, immaculate surface details."
-            )
-
-            negative_prompt_output = anchor_data['negative_constraints']
+            # STRICT JSON SCHEMA MAPPING (Eliminates trailing sentence concatenation)
+            structured_payload = {
+                "ingress_metadata": {
+                    "gate": "Gate-0-Perimeter",
+                    "similarity_score": round(similarity_score, 4),
+                    "status": "APPROVED" if similarity_score >= 0.4 else "RE-ANCHORED"
+                },
+                "prompt_structure": {
+                    "core_subject": raw_prompt.strip(),
+                    "aesthetic_directive": anchor_data["core_aesthetic"],
+                    "color_schema": anchor_data["color_palette"],
+                    "quality_modifiers": "High-end production render, 8k resolution, immaculate surface details"
+                },
+                "negative_constraints": anchor_data["negative_constraints"]
+            }
             
-            # Display Metrics & Clean Separation
+            # Display Metrics & Clean JSON Output
             col1, col2 = st.columns(2)
             with col1:
                 st.metric(label="Semantic Similarity Score", value=f"{similarity_score:.2f}")
             with col2:
-                st.markdown("🟢 **Semantic Integration Enforced**")
+                st.markdown("🟢 **JSON Schema Enforced**")
             
             st.markdown("---")
-            st.subheader("📋 Positive Anchored Prompt (Copy to Image Generator)")
-            st.code(realigned_prompt, language="text")
-            
-            st.subheader("🚫 Negative Prompt Constraints (Optional)")
-            st.code(negative_prompt_output, language="text")
+            st.subheader("📋 Structured JSON Output Payload")
+            st.code(json.dumps(structured_payload, indent=4), language="json")
