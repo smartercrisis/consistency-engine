@@ -6,7 +6,7 @@ from sentence_transformers import SentenceTransformer, util
 ST_CONFIG_FILE = "style_anchor.json"
 
 DEFAULT_ANCHOR = {
-    "core_aesthetic": "Cinematic AMD Radeon tech style, razor-sharp edge details, multi-layer microchip geometry, futurestic processors and circuit boards, sine waves, matte black and brushed titanium substrates, UHD, volumetric lighting.",
+    "core_aesthetic": "Cinematic AMD Radeon tech style, razor-sharp edge details, multi-layer microchip geometry, futuristic processors and circuit boards, sine waves, matte black and brushed titanium substrates, UHD, volumetric lighting.",
     "color_palette": "Crimson Red (#C50000), Royal Gold (#D4AF37), Deep Carbon (#111111)",
     "negative_constraints": "No cartoonish illustration, no flat lighting, no pastel colors, no chaotic or cluttered backgrounds."
 }
@@ -30,8 +30,8 @@ model = load_model()
 
 st.set_page_config(page_title="CIAT25 Visual Consistency Engine (LITE)", layout="wide")
 
-st.title("⚡ CIAT25.1: Visual Consistency Engine (LITE - Prose Weaving)")
-st.markdown("*Gate 0 Dynamic Perimeter Ingress & Natural Prose Synthesis*")
+st.title("⚡ CIAT25.1: Visual Consistency Engine (LITE - Weighted Synthesis)")
+st.markdown("*Gate 0 Perimeter Ingress & Attention-Weighted Schema Synthesis*")
 
 # Sidebar: Manage Style Anchor & Dynamic Thresholds
 with st.sidebar:
@@ -54,7 +54,7 @@ with st.sidebar:
         st.success("Style Anchor updated successfully!")
         anchor_data = updated_anchor
 
-# Main Panel: Prompt Ingress & Prose Weaving Synthesis
+# Main Panel: Prompt Ingress & Weighted Synthesis
 st.header("3. Structural Prompt Realignment Gate")
 raw_prompt = st.text_input("Enter your prompt or descriptive scene:", placeholder="e.g., an entire landscape of folded blue-white ice...")
 
@@ -62,18 +62,21 @@ if st.button("Realign & Synthesize Anchored Output"):
     if not raw_prompt.strip():
         st.warning("Please enter a prompt first.")
     else:
-        with st.spinner("Evaluating semantic drift and weaving prose payload..."):
+        with st.spinner("Evaluating semantic drift and constructing weighted syntax payload..."):
             anchor_embedding = model.encode(anchor_data["core_aesthetic"], convert_to_tensor=True)
             prompt_embedding = model.encode(raw_prompt, convert_to_tensor=True)
             
             similarity_score = util.cos_sim(prompt_embedding, anchor_embedding).item()
             
-            # PROSE WEAVING SYNTHESIS: Replaces clunky bracket tags with natural language modifier clauses
+            # WEIGHTED SYNTHESIS: Applies attention syntax and isolates style parameters 
+            # to prevent blind string-concatenation bleed.
             clean_subject = raw_prompt.strip().rstrip('.')
+            
             fused_prompt_string = (
-                f"{clean_subject}, rendered with {anchor_data['core_aesthetic']}, "
-                f"incorporating a strict color grading of {anchor_data['color_palette']}, "
-                f"high-end production render, 8k resolution, volumetric lighting."
+                f"{clean_subject} | "
+                f"Style Integration: ({anchor_data['core_aesthetic']}:1.3) | "
+                f"Color Grading: ({anchor_data['color_palette']}:1.2) | "
+                f"Render Engine: High-end production render, 8k resolution, volumetric lighting."
             )
             
             # JSON Payload for machine governance & audit
@@ -97,7 +100,7 @@ if st.button("Realign & Synthesize Anchored Output"):
                 st.markdown(f"{status_color} **Status: {structured_payload['ingress_metadata']['status']}**")
             
             st.markdown("---")
-            st.subheader("📋 Woven Fused Prompt (Ready for Pipeline)")
+            st.subheader("📋 Weighted Fused Prompt (Ready for Pipeline)")
             st.code(fused_prompt_string, language="text")
             
             st.subheader("📋 Machine Audit JSON Payload")
