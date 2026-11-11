@@ -5,7 +5,6 @@ from sentence_transformers import SentenceTransformer, util
 
 ST_CONFIG_FILE = "style_anchor.json"
 
-# Default style anchor
 DEFAULT_ANCHOR = {
     "core_aesthetic": "Cinematic Radeon-tech, razor-sharp edge details, multi-layer microchip geometry, matte black and brushed titanium substrates, volumetric lighting.",
     "color_palette": "Crimson Red (#C50000), Royal Gold (#D4AF37), Deep Carbon (#111111)",
@@ -32,7 +31,7 @@ model = load_model()
 st.set_page_config(page_title="CIAT25 Visual Consistency Engine (LITE)", layout="wide")
 
 st.title("⚡ CIAT25.1: Visual Consistency Engine (LITE)")
-st.markdown("*Gate 0 Perimeter Ingress & Structured Schema Enforcement*")
+st.markdown("*Gate 0 Perimeter Ingress & Fused Schema Synthesis*")
 
 # Sidebar: Manage Style Anchor
 with st.sidebar:
@@ -56,39 +55,45 @@ with st.sidebar:
 st.header("2. Structural Prompt Realignment Gate")
 raw_prompt = st.text_input("Enter your messy or casual prompt:", placeholder="e.g., make a server rack with red lights")
 
-if st.button("Realign & Generate Anchored Payload"):
+if st.button("Realign & Synthesize Anchored Output"):
     if not raw_prompt.strip():
         st.warning("Please enter a prompt first.")
     else:
-        with st.spinner("Evaluating semantic drift and building JSON schema payload..."):
+        with st.spinner("Evaluating semantic drift and synthesizing payload..."):
             anchor_embedding = model.encode(anchor_data["core_aesthetic"], convert_to_tensor=True)
             prompt_embedding = model.encode(raw_prompt, convert_to_tensor=True)
             
             similarity_score = util.cos_sim(prompt_embedding, anchor_embedding).item()
             
-            # STRICT JSON SCHEMA MAPPING (Eliminates trailing sentence concatenation)
+            # TRUE SYNTHESIS: Cleanly weaving subject and aesthetic into a unified string
+            clean_subject = raw_prompt.strip().rstrip('.')
+            fused_prompt_string = (
+                f"{clean_subject}, rendered with {anchor_data['core_aesthetic']} "
+                f"incorporating a primary color palette of {anchor_data['color_palette']}, "
+                f"high-end production render, 8k resolution, volumetric lighting."
+            )
+            
+            # JSON Payload for machine governance & audit
             structured_payload = {
                 "ingress_metadata": {
                     "gate": "Gate-0-Perimeter",
                     "similarity_score": round(similarity_score, 4),
                     "status": "APPROVED" if similarity_score >= 0.4 else "RE-ANCHORED"
                 },
-                "prompt_structure": {
-                    "core_subject": raw_prompt.strip(),
-                    "aesthetic_directive": anchor_data["core_aesthetic"],
-                    "color_schema": anchor_data["color_palette"],
-                    "quality_modifiers": "High-end production render, 8k resolution, immaculate surface details"
-                },
-                "negative_constraints": anchor_data["negative_constraints"]
+                "fused_prompt": fused_prompt_string,
+                "negative_constraints": anchor_data['negative_constraints']
             }
             
-            # Display Metrics & Clean JSON Output
+            # Display Metrics
             col1, col2 = st.columns(2)
             with col1:
                 st.metric(label="Semantic Similarity Score", value=f"{similarity_score:.2f}")
             with col2:
-                st.markdown("🟢 **JSON Schema Enforced**")
+                st.markdown("🟢 **Synthesis Complete**")
             
             st.markdown("---")
-            st.subheader("📋 Structured JSON Output Payload")
+            st.subheader("📋 Fused Prompt (Ready for Image Generator)")
+            st.code(fused_prompt_string, language="text")
+            
+            st.subheader("📋 Machine Audit JSON Payload")
             st.code(json.dumps(structured_payload, indent=4), language="json")
