@@ -6,7 +6,7 @@ from sentence_transformers import SentenceTransformer, util
 ST_CONFIG_FILE = "style_anchor.json"
 
 DEFAULT_ANCHOR = {
-    "core_aesthetic": "Cinematic Radeon-tech, razor-sharp edge details, multi-layer microchip geometry, matte black and brushed titanium substrates, volumetric lighting.",
+    "core_aesthetic": "Cinematic AMD Radeon tech style, razor-sharp edge details, multi-layer microchip geometry, futurestic processors and circuit boards, sine waves, matte black and brushed titanium substrates, UHD, volumetric lighting.",
     "color_palette": "Crimson Red (#C50000), Royal Gold (#D4AF37), Deep Carbon (#111111)",
     "negative_constraints": "No cartoonish illustration, no flat lighting, no pastel colors, no chaotic or cluttered backgrounds."
 }
